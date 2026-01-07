@@ -236,17 +236,18 @@ body {
 /* 小手機：減少左右空白，讓卡片更大 */
 @media screen and (max-width: 600px) {
   .bg-container {
-    padding: 20px 5px !important;  /* ⭐ 大幅減少左右 padding */
+    padding: 30px 8px !important;  /* ⭐ 減少左右到最小 */
   }
 
   .style-section {
-    margin-top: 30px;
-    padding: 0 !important;  /* ⭐ 移除 section padding */
+    margin-top: 20px;
+    padding: 0 !important;
+    max-width: 100% !important;  /* ⭐ 移除最大寬度限制 */
   }
 
   .style-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;  /* ⭐ 減少間距到最小 */
+    gap: 10px !important;  /* ⭐ 保持適當間距 */
     padding: 0 !important;
     margin-bottom: 40px;
   }
@@ -256,34 +257,47 @@ body {
   }
 
   .style-card {
-    padding: 50px 15px;  /* ⭐ 增加卡片高度 */
-    min-height: 220px;  /* ⭐ 增加最小高度 */
-    border-radius: 10px;  /* ⭐ 稍微減少圓角，讓卡片看起來更大 */
+    padding: 55px 20px;  /* ⭐ 增加上下 padding，讓卡片更方正 */
+    min-height: 200px;  
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;  /* ⭐ 強制 1:1 正方形比例 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .style-name {
-    font-size: 1.6em;  /* ⭐ 放大標題 */
-    margin-bottom: 12px;
+    font-size: 1.7em;  /* ⭐ 再放大標題 */
+    margin-bottom: 15px;
   }
 
   .style-desc {
-    font-size: 0.9em;
-    line-height: 1.5;
+    font-size: 0.92em;
+    line-height: 1.6;
+    text-align: center;
   }
 
   .section-title {
-    font-size: 1.8em;
-    margin-bottom: 30px;
-    padding: 0 10px;  /* ⭐ 只給標題一點 padding */
+    font-size: 1.9em;
+    margin-bottom: 20px;
+    padding: 0 15px;
   }
 
   .section-subtitle {
-    padding: 0 10px;
+    padding: 0 15px;
+    font-size: 0.95em;
+    margin-bottom: 30px;
   }
 
   .footer {
-    padding: 20px 10px;
+    padding: 20px 15px;
     font-size: 0.85em;
+  }
+
+  .intro-box {
+    padding: 0 15px;
+    font-size: 0.9em;
   }
 }
 
