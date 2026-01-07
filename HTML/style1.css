@@ -233,29 +233,42 @@ body {
   }
 }
 
-/* 小手機：進一步優化 */
+/* 小手機：減少左右空白，讓卡片更大 */
 @media screen and (max-width: 600px) {
+  .bg-container {
+    padding: 30px 10px !important;  /* ⭐ 減少容器左右 padding */
+  }
+
+  .style-section {
+    margin-top: 40px;  /* ⭐ 減少上方間距 */
+  }
+
   .style-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 16px !important;
-    padding: 0 5px !important;
+    gap: 12px !important;  /* ⭐ 減少卡片間距 */
+    padding: 0 !important;  /* ⭐ 移除 grid 的 padding */
+  }
+
+  .style-link {
+    max-width: 100% !important;
   }
 
   .style-card {
-    padding: 40px 15px;
-    min-height: 180px;
+    padding: 45px 15px;  /* ⭐ 調整卡片內距 */
+    min-height: 200px;
   }
 
   .style-name {
-    font-size: 1.4em;
+    font-size: 1.5em;
+  }
+
+  .style-desc {
+    font-size: 0.88em;
   }
 
   .section-title {
-    font-size: 1.8em;
-  }
-
-  .bg-container {
-    padding: 30px 10px;
+    font-size: 1.9em;
+    margin-bottom: 40px;  /* ⭐ 減少標題下方間距 */
   }
 }
 
