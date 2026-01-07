@@ -43,7 +43,7 @@
     /* 歌單容器包裝 */
     .songs-container {
       position: relative;
-      padding: 0 20px;
+      padding: 0 100px;  /* ⭐ 增加左右 padding 避免被箭頭遮住 */
       margin-bottom: 40px;
     }
 
@@ -336,6 +336,10 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 24px;
       }
+
+      .songs-container {
+        padding: 0 80px;  /* ⭐ 平板時稍微減少 padding */
+      }
     }
 
     /* 手機：2個一排 */
@@ -343,6 +347,10 @@
       .songs-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+      }
+
+      .songs-container {
+        padding: 0 60px;  /* ⭐ 手機時再減少 padding */
       }
 
       .nav-arrow {
@@ -378,6 +386,10 @@
 
     /* 小手機：更小的箭頭 */
     @media (max-width: 480px) {
+      .songs-container {
+        padding: 0 50px;  /* ⭐ 小手機時更少 padding */
+      }
+
       .nav-arrow {
         width: 40px;
         height: 40px;
