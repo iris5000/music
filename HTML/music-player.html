@@ -1890,6 +1890,7 @@ const playlist = {
     }
 };
 
+
 // 播放模式
 let repeatMode = 'off'; // 'off', 'one', 'all'
 let shuffleMode = false;
@@ -1899,7 +1900,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const listName = urlParams.get("playlist") || "kpop";
 const songId = urlParams.get('songs') || '1';
 
-// ========== 漢堡選單功能 ==========
+// ========== 漢堡選單功能（修正版）==========
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const sidebarMenu = document.getElementById('sidebarMenu');
 const overlay = document.getElementById('overlay');
@@ -1910,8 +1911,35 @@ function toggleMenu() {
     overlay.classList.toggle('active');
 }
 
-hamburgerBtn.addEventListener('click', toggleMenu);
-overlay.addEventListener('click', toggleMenu);
+// ⭐ 漢堡按鈕點擊
+hamburgerBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // 防止事件冒泡
+    toggleMenu();
+});
+
+// ⭐ 遮罩層點擊關閉
+overlay.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+});
+
+// ⭐ 點擊選單外部關閉（額外保險）
+document.addEventListener('click', (e) => {
+    const isClickInside = sidebarMenu.contains(e.target) || hamburgerBtn.contains(e.target);
+    if (!isClickInside && sidebarMenu.classList.contains('active')) {
+        hamburgerBtn.classList.remove('active');
+        sidebarMenu.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+});
+
+// ⭐ 防止選單內部點擊時關閉（除非是歌曲項目）
+sidebarMenu.addEventListener('click', (e) => {
+    // 如果點擊的不是歌曲項目，阻止事件冒泡
+    if (!e.target.closest('.playlist-item')) {
+        e.stopPropagation();
+    }
+});
 
 // ========== 生成播放列表 ==========
 function generatePlaylist() {
@@ -1959,7 +1987,7 @@ if (backBtn) {
 
 if (!playlist[listName]) {
     alert("歌單不存在");
-    location.href = "index.html"; // 或你想回的頁面
+    location.href = "index.html";
     throw new Error("Playlist not found");
 }
 
@@ -2000,6 +2028,7 @@ audio.addEventListener('canplaythrough', () => {
         playBtn.innerHTML = '<i class="fas fa-play"></i>';
     });
 }, { once: true });
+
 const playBtn = document.getElementById("playBtn");
 const progress = document.getElementById("progress");
 const albumCover = document.getElementById("cover");
