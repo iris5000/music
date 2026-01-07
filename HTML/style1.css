@@ -236,17 +236,19 @@ body {
 /* 小手機：減少左右空白，讓卡片更大 */
 @media screen and (max-width: 600px) {
   .bg-container {
-    padding: 30px 10px !important;  /* ⭐ 減少容器左右 padding */
+    padding: 20px 5px !important;  /* ⭐ 大幅減少左右 padding */
   }
 
   .style-section {
-    margin-top: 40px;  /* ⭐ 減少上方間距 */
+    margin-top: 30px;
+    padding: 0 !important;  /* ⭐ 移除 section padding */
   }
 
   .style-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;  /* ⭐ 減少卡片間距 */
-    padding: 0 !important;  /* ⭐ 移除 grid 的 padding */
+    gap: 8px !important;  /* ⭐ 減少間距到最小 */
+    padding: 0 !important;
+    margin-bottom: 40px;
   }
 
   .style-link {
@@ -254,21 +256,34 @@ body {
   }
 
   .style-card {
-    padding: 45px 15px;  /* ⭐ 調整卡片內距 */
-    min-height: 200px;
+    padding: 50px 15px;  /* ⭐ 增加卡片高度 */
+    min-height: 220px;  /* ⭐ 增加最小高度 */
+    border-radius: 10px;  /* ⭐ 稍微減少圓角，讓卡片看起來更大 */
   }
 
   .style-name {
-    font-size: 1.5em;
+    font-size: 1.6em;  /* ⭐ 放大標題 */
+    margin-bottom: 12px;
   }
 
   .style-desc {
-    font-size: 0.88em;
+    font-size: 0.9em;
+    line-height: 1.5;
   }
 
   .section-title {
-    font-size: 1.9em;
-    margin-bottom: 40px;  /* ⭐ 減少標題下方間距 */
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    padding: 0 10px;  /* ⭐ 只給標題一點 padding */
+  }
+
+  .section-subtitle {
+    padding: 0 10px;
+  }
+
+  .footer {
+    padding: 20px 10px;
+    font-size: 0.85em;
   }
 }
 
