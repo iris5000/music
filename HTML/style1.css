@@ -205,14 +205,14 @@ body {
 
 /* ⭐ 響應式設計修正 */
 /* 平板和手機：2個一排 */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .style-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 20px;
+    gap: 20px !important;
   }
   
   .style-link {
-    max-width: 100%;
+    max-width: 100% !important;
   }
 
   .style-card {
@@ -234,9 +234,11 @@ body {
 }
 
 /* 小手機：進一步優化 */
-@media (max-width: 480px) {
+@media screen and (max-width: 600px) {
   .style-grid {
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    padding: 0 5px !important;
   }
 
   .style-card {
@@ -250,6 +252,10 @@ body {
 
   .section-title {
     font-size: 1.8em;
+  }
+
+  .bg-container {
+    padding: 30px 10px;
   }
 }
 
