@@ -1,3 +1,4 @@
+
 body {
     margin: 0;
     font-family: sans-serif;
@@ -200,6 +201,7 @@ body {
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 999;
+    cursor: pointer;  /* ⭐ 加上 cursor 提示可點擊 */
 }
 
 .overlay.active {
@@ -688,9 +690,27 @@ body {
     }
 }
 
+/* ⭐ 手機版側邊選單全螢幕 */
 @media (max-width: 768px) {
     .sidebar-menu {
         width: 100%;
         right: -100%;
+    }
+    
+    .sidebar-menu.active {
+        right: 0;
+    }
+    
+    /* ⭐ 確保遮罩層在手機版也能正常工作 */
+    .overlay {
+        z-index: 999;
+    }
+    
+    .sidebar-menu {
+        z-index: 1000;
+    }
+    
+    .hamburger-btn {
+        z-index: 1001;
     }
 }
