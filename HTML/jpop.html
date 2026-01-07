@@ -12,48 +12,104 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #333;
-    }
-
-    /* 模糊背景 */
-    .bg-container {
-      position: relative;
+      background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
       min-height: 100vh;
-      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    .bg-container::before {
-      content: '';
+    /* 背景粒子畫布 */
+    #particles {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: blur(8px);
-      z-index: -1;
-    }
-
-    .bg-container::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
+      width: 100%;
+      height: 100%;
       z-index: 0;
+      pointer-events: none;
     }
 
     /* 內容容器 */
     .content {
+      padding: 40px 0px;
+      max-width: 1400px;
+      margin: 0 auto;
       position: relative;
       z-index: 1;
-      max-width: 900px;
-      margin: 0 auto;
+    }
+
+    /* 歌單容器包裝 */
+    .songs-container {
+      position: relative;
+      padding: 0 20px;
+      margin-bottom: 40px;
+    }
+
+    /* 左右切換箭頭 */
+    .nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+      color: white;
+      font-size: 24px;
+      text-decoration: none;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-arrow.left {
+      left: 30px;
+    }
+
+    .nav-arrow.right {
+      right: 30px;
+    }
+
+    /* 當前歌單指示器 */
+    .playlist-indicator {
+      text-align: center;
+      margin-top: 30px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+    }
+
+    .playlist-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: rgba(255, 255, 255, 0.9);
+      width: 30px;
+      border-radius: 5px;
     }
 
     /* 返回按鈕 */
@@ -61,16 +117,21 @@
       display: inline-block;
       color: white;
       text-decoration: none;
-      padding: 10px 20px;
+      padding: 12px 24px;
       background: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      margin-bottom: 20px;
-      transition: background 0.3s;
+      border-radius: 25px;
+      margin-bottom: 30px;
+      margin-left: 20px;
+      transition: all 0.3s;
       backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-weight: 500;
     }
 
     .back-btn:hover {
       background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     /* 頁面標題 */
@@ -78,207 +139,460 @@
       font-size: 2.5em;
       color: white;
       text-align: center;
-      margin-bottom: 15px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      font-weight: 700;
     }
 
     .page-subtitle {
       text-align: center;
       color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 40px;
+      margin-bottom: 50px;
       font-size: 1.1em;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
     }
 
-    /* 播放列表容器 */
-    .playlist {
+    /* 歌曲卡片容器 */
+    .songs-grid {
+      display: flex;
+      gap: 30px;
+      padding: 0 10px 20px 10px;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    /* 單個歌曲卡片 */
+    .song-card {
       background: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      margin-bottom: 40px;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      position: relative;
+      flex: 1;
+      max-width: 240px;
+      min-width: 180px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
     }
 
-    /* 歌曲項目 */
-    .song-item {
+    /* 卡片進場動畫 */
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 為每張卡片設定不同的延遲 */
+    .song-card:nth-child(1) { animation-delay: 0.1s; }
+    .song-card:nth-child(2) { animation-delay: 0.2s; }
+    .song-card:nth-child(3) { animation-delay: 0.3s; }
+    .song-card:nth-child(4) { animation-delay: 0.4s; }
+    .song-card:nth-child(5) { animation-delay: 0.5s; }
+    .song-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .song-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 封面圖片容器 */
+    .song-cover-container {
+      position: relative;
+      width: 100%;
+      padding-top: 100%; /* 1:1 比例 */
+      overflow: hidden;
+    }
+
+    .song-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .song-card:hover .song-cover {
+      transform: scale(1.05);
+    }
+
+    /* 播放按鈕覆蓋層 */
+    .play-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
       display: flex;
       align-items: center;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      transition: all 0.3s;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .song-card:hover .play-overlay {
+      opacity: 1;
+    }
+
+    .play-btn-large {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
+      color: #2C3E50;
+      font-size: 24px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .play-btn-large:hover {
+      transform: scale(1.1);
       background: white;
     }
 
-    .song-item:hover {
-      background: #f0f0f0;
-      transform: translateX(5px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* 歌曲編號 */
-    .song-number {
-      font-size: 1.2em;
+    /* 歌曲編號標籤 */
+    .song-number-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-weight: bold;
-      color: #999;
-      width: 40px;
-      text-align: center;
+      font-size: 14px;
+      z-index: 1;
+      backdrop-filter: blur(5px);
     }
 
-    /* 專輯封面 */
-    .song-cover {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
-      object-fit: cover;
-      margin: 0 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    /* 歌曲資訊 */
-    .song-info {
-      flex: 1;
+    /* 歌曲資訊區域 */
+    .song-info-area {
+      padding: 20px;
     }
 
     .song-title {
-      font-size: 1.1em;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: #333;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #222;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* 限制顯示2行，超過顯示省略號 */
+      -webkit-box-orient: vertical;
+      line-height: 1.4;
+      min-height: 2.8em;
     }
 
     .song-artist {
       color: #666;
-      font-size: 0.95em;
+      font-size: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    /* 播放時間 */
     .song-duration {
       color: #999;
-      font-size: 0.95em;
-      margin-right: 10px;
-    }
-
-    /* 播放按鈕 */
-    .play-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #a3a3a3 0%, #ffffff 100%);
-      border: none;
-      color: white;
-      font-size: 1.2em;
-      cursor: pointer;
-      transition: transform 0.2s;
+      font-size: 13px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 5px;
     }
 
-    .play-btn:hover {
-      transform: scale(1.1);
+    .song-duration::before {
+      content: '🎵';
+      font-size: 12px;
     }
 
     /* 底部版權 */
     .footer {
-      position: relative;
-      z-index: 1;
       text-align: center;
-      color: white;
-      padding: 20px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 40px 20px 20px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      font-size: 14px;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .songs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 20px;
+        overflow-x: visible;
+      }
+
+      .song-card {
+        min-width: 0;
+        max-width: none;
+      }
+
+      .nav-arrow {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .nav-arrow.left {
+        left: 15px;
+      }
+
+      .nav-arrow.right {
+        right: 15px;
+      }
+
+      .page-title {
+        font-size: 2em;
+      }
+
+      .song-info-area {
+        padding: 15px;
+      }
+
+      .song-title {
+        font-size: 14px;
+      }
+
+      .song-artist {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .songs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .nav-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+
+      .nav-arrow.left {
+        left: 10px;
+      }
+
+      .nav-arrow.right {
+        right: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="bg-container">
-    <div class="content">
-      <a href="index.html" class="back-btn">← 返回首頁</a>
-      
-      <h1 class="page-title">🎧 J-POP 歌曲推薦</h1>
-      <p class="page-subtitle">溫柔細膩的旋律與情感表達，時而明亮、時而感傷。</p>
+  <!-- 背景粒子容器 -->
+  <canvas id="particles"></canvas>
 
-    <div class="song-item">
-      <div class="song-number">01</div>
-      <img src="images/7.jpg" class="song-cover" alt="封面">
-      <div class="song-info">
-        <div class="song-title">言って。</div>
-        <div class="song-artist">ヨルシカ</div>
-      </div>
-      <div class="song-duration">4:03</div>
-      <button class="play-btn" onclick="window.location.href='music-player.html?playlist=jpop&songs=1'">▶</button>
-    </div>
+  <!-- 左右切換箭頭 -->
+  <a href="kpop.html" class="nav-arrow left" title="上一個歌單">
+    ◀
+  </a>
+  <a href="westernpop.html" class="nav-arrow right" title="下一個歌單">
+    ▶
+  </a>
 
-        <div class="song-item">
-          <div class="song-number">02</div>
-          <img src="images/8.jpg" class="song-cover" alt="封面">
-          <div class="song-info">
+  <div class="content">
+    <a href="index.html" class="back-btn">← 返回首頁</a>
+    
+    <h1 class="page-title">J-POP 歌曲推薦</h1>
+    <p class="page-subtitle">溫柔細膩的旋律與情感表達，時而明亮、時而感傷</p>
+
+    <div class="songs-container">
+      <div class="songs-grid" id="songsGrid">
+        <!-- 歌曲 1 -->
+        <div class="song-card" onclick="window.location.href='music-player.html?playlist=jpop&songs=1'">
+          <div class="song-cover-container">
+            <div class="song-number-tag">01</div>
+            <img src="images/7.jpg" class="song-cover" alt="封面">
+            <div class="play-overlay">
+              <button class="play-btn-large">▶</button>
+            </div>
+          </div>
+          <div class="song-info-area">
+            <div class="song-title">言って。</div>
+            <div class="song-artist">ヨルシカ</div>
+            <div class="song-duration">4:03</div>
+          </div>
+        </div>
+
+        <!-- 歌曲 2 -->
+        <div class="song-card" onclick="window.location.href='music-player.html?playlist=jpop&songs=2'">
+          <div class="song-cover-container">
+            <div class="song-number-tag">02</div>
+            <img src="images/8.jpg" class="song-cover" alt="封面">
+            <div class="play-overlay">
+              <button class="play-btn-large">▶</button>
+            </div>
+          </div>
+          <div class="song-info-area">
             <div class="song-title">ある男</div>
             <div class="song-artist">エイハブ</div>
+            <div class="song-duration">2:42</div>
           </div>
-          <div class="song-duration">2:42</div>
-          <button class="play-btn" onclick="window.location.href='music-player.html?playlist=jpop&songs=2'">▶</button>
         </div>
 
-        <div class="song-item">
-          <div class="song-number">03</div>
-          <img 
-                id="cover" 
-                class="song-cover" 
-                src="https://i.ytimg.com/vi/IAq7woc-vxY/sddefault.jpg">
-          <div class="song-info">
-            <div class="song-title">ラブレス(Loveless)</div>
+        <!-- 歌曲 3 -->
+        <div class="song-card" onclick="window.location.href='music-player.html?playlist=jpop&songs=3'">
+          <div class="song-cover-container">
+            <div class="song-number-tag">03</div>
+            <img src="https://i.ytimg.com/vi/IAq7woc-vxY/sddefault.jpg" class="song-cover" alt="封面">
+            <div class="play-overlay">
+              <button class="play-btn-large">▶</button>
+            </div>
+          </div>
+          <div class="song-info-area">
+            <div class="song-title">ラブレス (Loveless)</div>
             <div class="song-artist">Dios</div>
+            <div class="song-duration">3:31</div>
           </div>
-          <div class="song-duration">3:31</div>
-          <button class="play-btn" onclick="window.location.href='music-player.html?playlist=jpop&songs=3'">▶</button>
         </div>
 
-        <div class="song-item">
-          <div class="song-number">04</div>
-          <img src="images/10.webp" class="song-cover" alt="封面">
-          <div class="song-info">
-            <div class="song-title">さよならエンドロール(Sayonara End Roll)</div>
+        <!-- 歌曲 4 -->
+        <div class="song-card" onclick="window.location.href='music-player.html?playlist=jpop&songs=4'">
+          <div class="song-cover-container">
+            <div class="song-number-tag">04</div>
+            <img src="images/10.webp" class="song-cover" alt="封面">
+            <div class="play-overlay">
+              <button class="play-btn-large">▶</button>
+            </div>
+          </div>
+          <div class="song-info-area">
+            <div class="song-title">さよならエンドロール (Sayonara End Roll)</div>
             <div class="song-artist">Eve</div>
+            <div class="song-duration">3:36</div>
           </div>
-          <div class="song-duration">3:36</div>
-          <button class="play-btn" onclick="window.location.href='music-player.html?playlist=jpop&songs=4'">▶</button>
         </div>
 
-        <div class="song-item">
-          <div class="song-number">05</div>
-          <img src="images/11.webp" class="song-cover" alt="封面">
-          <div class="song-info">
-            <div class="song-title">アイナ・ジ・エンド(On The Way)</div>
+        <!-- 歌曲 5 -->
+        <div class="song-card" onclick="window.location.href='music-player.html?playlist=jpop&songs=5'">
+          <div class="song-cover-container">
+            <div class="song-number-tag">05</div>
+            <img src="images/11.webp" class="song-cover" alt="封面">
+            <div class="play-overlay">
+              <button class="play-btn-large">▶</button>
+            </div>
+          </div>
+          <div class="song-info-area">
+            <div class="song-title">アイナ・ジ・エンド (On The Way)</div>
             <div class="song-artist">AiNA THE END</div>
+            <div class="song-duration">3:37</div>
           </div>
-          <div class="song-duration">3:37</div>
-          <button class="play-btn" onclick="window.location.href='music-player.html?playlist=jpop&songs=5'">▶</button>
         </div>
 
-        <div class="song-item">
-          <div class="song-number">06</div>
-          <img src="images/12.jpg" class="song-cover" alt="封面">
-          <div class="song-info">
+        <!-- 歌曲 6 -->
+        <div class="song-card" onclick="window.location.href='music-player.html?playlist=jpop&songs=6'">
+          <div class="song-cover-container">
+            <div class="song-number-tag">06</div>
+            <img src="images/12.jpg" class="song-cover" alt="封面">
+            <div class="play-overlay">
+              <button class="play-btn-large">▶</button>
+            </div>
+          </div>
+          <div class="song-info-area">
             <div class="song-title">IS THIS LOVE</div>
             <div class="song-artist">XG</div>
+            <div class="song-duration">2:56</div>
           </div>
-          <div class="song-duration">2:56</div>
-          <button class="play-btn" onclick="window.location.href='music-player.html?playlist=jpop&songs=6'">▶</button>
         </div>
       </div>
     </div>
 
-    <div class="footer">© 2025 homework made by Chenshin-yu Wucian-jia</div>
+    <!-- 歌單指示器 -->
+    <div class="playlist-indicator">
+      <p>歌單 2 / 4</p>
+      <div class="playlist-dots">
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
   </div>
 
-<script>
-  // 點擊歌曲列表效果
-  document.querySelectorAll('.song-item').forEach(item => {
-    item.addEventListener('click', function() {
+  <div class="footer">© 2025 homework made by Chenshin-yu Wucian-jia</div>
+  <script>
+    // ========== 背景粒子效果 ==========
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = 60;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0;
+        if (this.y < 0) this.y = canvas.height;
+      }
+
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
     });
-  });
-</script>
+  </script>
 </body>
 </html>

@@ -9,31 +9,79 @@
 </head>
 
 <body>
+<!-- 遮罩層 -->
+<div class="overlay" id="overlay"></div>
+
+<!-- 側邊選單 -->
+<div class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header">
+        <h2>播放列表</h2>
+        <p id="playlistName">韓文歌單</p>
+    </div>
+    <div class="playlist-items" id="playlistItems">
+        <!-- 歌單項目將由 JavaScript 動態生成 -->
+    </div>
+</div>
+
 <div class="music-page">
     <div class="player">
+        <!-- 漢堡選單按鈕 -->
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
         <button class="back-btn" id="backBtn">返回前頁</button>
         <div class="album">
             <h2 class="song-title" id="songTitle">載入中...</h2>
             <p class="artist-name" id="artistName">載入中...</p>
-                <div class="album-box">
-                    <div class="album-bg"></div>
-                    <img id="cover" class="album-cover" src="" alt="album cover">
-                </div>
+            <div class="album-box" id="albumBox">
+                <div class="album-bg"></div>
+                <img id="cover" class="album-cover" src="" alt="album cover">
+                <div class="vinyl-center"></div>
+            </div>
 
-                <audio id="player" src=""></audio>
+            <audio id="player" src=""></audio>
 
-                <div class="progress-row">
-                    <div id="currentTime" class="time">0:00</div>
-                    <input id="progress" class="progress-bar" type="range" min="0" max="100" value="0" step="0.1">
-                    <div id="durationTime" class="time">0:00</div>
-                </div>
+            <div class="progress-row">
+                <div id="currentTime" class="time">0:00</div>
+                <input id="progress" class="progress-bar" type="range" min="0" max="100" value="0" step="0.1">
+                <div id="durationTime" class="time">0:00</div>
+            </div>
         </div>
 
         <div class="controls">
-            <button id="prevBtn" class="btn"><i class="fas fa-step-backward"></i></button>
-            <button id="playBtn" class="btn"><i class="fas fa-play"></i></button>
-            <button id="nextBtn" class="btn"><i class="fas fa-step-forward"></i></button>
-            <button id="shuffleBtn" class="btn"><i class="fas fa-random"></i></button>
+            <button id="prevBtn" class="btn" title="上一首"><i class="fas fa-step-backward"></i></button>
+            <button id="playBtn" class="btn" title="播放/暫停"><i class="fas fa-play"></i></button>
+            <button id="nextBtn" class="btn" title="下一首"><i class="fas fa-step-forward"></i></button>
+            <button id="repeatBtn" class="btn" title="單曲循環"><i class="fas fa-redo"></i></button>
+            <button id="shuffleBtn" class="btn" title="隨機播放"><i class="fas fa-random"></i></button>
+        </div>
+
+        <!-- 歌曲資訊區塊 -->
+        <div class="song-credits">
+            <h4>歌曲資訊</h4>
+            <div class="credit-item">
+                <span class="credit-label">作曲：</span>
+                <span class="credit-value" id="creditComposer">-</span>
+            </div>
+            <div class="credit-item">
+                <span class="credit-label">作詞：</span>
+                <span class="credit-value" id="creditLyricist">-</span>
+            </div>
+            <div class="credit-item">
+                <span class="credit-label">專輯：</span>
+                <span class="credit-value" id="creditAlbum">-</span>
+            </div>
+            <div class="credit-item">
+                <span class="credit-label">年份：</span>
+                <span class="credit-value" id="creditYear">-</span>
+            </div>
+            <a href="#" id="youtubeLink" class="youtube-link" target="_blank">
+                <i class="fab fa-youtube"></i>
+                在 YouTube 上觀看
+            </a>
         </div>
     </div>
 
@@ -55,7 +103,14 @@ const playlist = {
                 title: "나란히 (Side By Side)",
                 artist: "비와이 (BewhY)",
                 cover: "images/1.webp",
-                audio: "music/song1.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/song1.mp3",
+                duration: "2:42",
+                credits: {
+                    composer: "BewhY",
+                    lyricist: "BewhY",
+                    album: "The Movie Star",
+                    year: "2019"
+                },
                 lyrics:`
                 앞만 보고 달려 여긴 소돔
                 앞만 보고 달려 여긴 소돔
@@ -148,7 +203,14 @@ const playlist = {
                 title: "CLIK CLAK",
                 artist: "BABYMONSTER",
                 cover: "images/2.jpg",
-                audio: "music/song2.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/song2.mp3",
+                duration: "2:58",
+                credits: {
+                    composer: "Ricky Luna, Rolando Luna, Keith Bykoff, Malaynah",
+                    lyricist: "Malaynah, Ricky Luna, Rolando Luna, CHOICE37, MASTA WU",
+                    album: "Drip",
+                    year: "2024"
+                },
                 lyrics:`
                 Huh
                 Hey hey hey hey
@@ -237,7 +299,14 @@ const playlist = {
                 title: "잘 알지도 못하면서(Without Knowing It All)",
                 artist: "김예림(Lim Kim)",
                 cover: "images/3.jpg",
-                audio: "music/song3.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/song3.mp3",
+                duration: "5:18",
+                credits: {
+                    composer: "unknow",
+                    lyricist: "unknow",
+                    album: "Goodbye 20",
+                    year: "2013"
+                },
                 lyrics:`
                 잘 알지도 못하면서
                 明明什麼也不懂
@@ -356,7 +425,14 @@ const playlist = {
                 title: "청춘찬가",
                 artist: "세븐틴 (SEVENTEEN)",
                 cover: "images/4.jpg",
-                audio: "music/song4.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/song4.mp3",
+                duration: "4:00",
+                credits: {
+                    composer: "Woozi, Bumzu",
+                    lyricist: "Woozi, Bumzu",
+                    album: "17 IS RIGHT HERE",
+                    year: "2024"
+                },
                 lyrics:`
                 어쩌다 보니 처음으로 마주하는 오늘이라서　
                 因為是偶然間初次相遇的今天
@@ -475,7 +551,14 @@ const playlist = {
                 title: "나비소녀 (Don't Go)",
                 artist: "EXO",
                 cover: "images/5.webp",
-                audio: "music/song5.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/song5.mp3",
+                duration: "3:34",
+                credits: {
+                    composer: "Jordan Kyle, DK, John Major, Jeffrey Patrick Lewis",
+                    lyricist: "Seo Jium (서지음)",
+                    album: "The 1st Album 'XOXO' (KISS Ver.)",
+                    year: "2013"
+                },
                 lyrics:`
                 조그만 날갯짓 널 향한 이끌림 나에게 따라오라 손짓한 것 같아서
                 你小小的翅膀 像是指引我跟隨著你
@@ -556,7 +639,14 @@ const playlist = {
                 title: "Girls Never Die",
                 artist: "tripleS(트리플에스)",
                 cover: "images/6.jpg",
-                audio: "music/song6.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/song6.mp3",
+                duration: "3:44",
+                credits: {
+                    composer: "Jaden Jeong, El Capitxn, Vendors, Maria Marcus",
+                    lyricist: "Jaden Jeong",
+                    album: "ASSEMBLE24",
+                    year: "2024"
+                },
                 lyrics:`
                 Higher now
                 Can’t deny Never die
@@ -651,7 +741,14 @@ const playlist = {
                 title: "言って",
                 artist: "ヨルシカ",
                 cover: "images/7.jpg",
-                audio: "music/jpop1.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/jpop1.mp3",
+                duration: "4:03",
+                credits: {
+                    composer: "n-buna（ナブナ）",
+                    lyricist: "n-buna（ナブナ）",
+                    album: "夏草が邪魔をする",
+                    year: "2017"
+                },
                 lyrics:`
                 あのね、私実は気付いてるの
                 ほら、君がいったこと
@@ -757,7 +854,14 @@ const playlist = {
                 title: "ある男",
                 artist: "エイハブ",
                 cover: "images/8.jpg",
-                audio: "music/jpop2.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/jpop2.mp3",
+                duration: "2:42",
+                credits: {
+                    composer: "ソガケイスケ",
+                    lyricist: "ソガケイスケ",
+                    album: "單曲",
+                    year: "2024"
+                },
                 lyrics:`
                 下んねぇ
                 待っていたのは
@@ -865,7 +969,14 @@ const playlist = {
                 title: "ラブレス(Loveless)",
                 artist: "Dios",
                 cover: "images/9.jpg",
-                audio: "music/jpop3.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/jpop3.mp3",
+                duration: "3:31",
+                credits: {
+                    composer: "Dios",
+                    lyricist: "Dios",
+                    album: "unknow",
+                    year: "2023"
+                },
                 lyrics:`
                 LOVELESS なんか　くだらねー夜だ
                 あなたといたい
@@ -962,7 +1073,14 @@ const playlist = {
                 title: "さよならエンドロール(Sayonara End Roll)",
                 artist: "EVE",
                 cover: "images/10.webp",
-                audio: "music/jpop4.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/jpop4.mp3",
+                duration: "3:36",
+                credits: {
+                    composer: "EVE",
+                    lyricist: "EVE",
+                    album: "unknow",
+                    year: "2024"
+                },
                 lyrics:`
                 あぁ、さっきまで笑っていたのは何処へやら
                 aa, sakki ma de waratte i ta no wa doko he ya ra
@@ -1140,10 +1258,17 @@ const playlist = {
                 你嘆了一口氣　並努力地向我露出了微笑　讓我們明天再見。`
             },
             5: {
-                title: "アイナ・ジ・エンド(On The Way)",
+                title: "革命道中(On The Way)",
                 artist: "AiNA THE END",
                 cover: "images/11.webp",
-                audio: "music/jpop5.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/jpop5.mp3",
+                duration: "3:37",
+                credits: {
+                    composer: "アイナ・ジ・エンド, Shin Sakiura",
+                    lyricist: "アイナ・ジ・エンド",
+                    album: "單曲",
+                    year: "2025"
+                },
                 lyrics:`
                 唸るぜ
                 血泥ついたって守りたい
@@ -1209,7 +1334,14 @@ const playlist = {
                 title: "IS THIS LOVE",
                 artist: "XG",
                 cover: "images/12.jpg",
-                audio: "music/jpop6.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/jpop6.mp3",
+                duration: "2:56",
+                credits: {
+                    composer: "Blush, Chancellor (챈슬러), Knave (네이브) & Mychole Anderson",
+                    lyricist: "Blush, Chancellor (챈슬러), Knave (네이브) & Mychole Anderson",
+                    album: "AWE",
+                    year: "2024"
+                },
                 lyrics:`
                 作詞 : Blush, Chancellor (챈슬러), Knave (네이브) & Mychole Anderson    
                 作曲 : Blush, Chancellor (챈슬러), Knave (네이브) & Mychole Anderson 
@@ -1262,7 +1394,14 @@ const playlist = {
                 title: "World's Smallest Violin",
                 artist: "AJR",
                 cover: "images/13.jpg",
-                audio: "music/west1.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/west1.mp3",
+                duration: "3:44",
+                credits: {
+                    composer: "Adam Met, Jack Met, Ryan Met",
+                    lyricist: "Adam Met, Jack Met, Ryan Met",
+                    album: "OK ORCHESTRA",
+                    year: "2021"
+                },
                 lyrics:`
                 My grandpa fought in World War Two
                 He was such a noble dude
@@ -1328,7 +1467,14 @@ const playlist = {
                 title: "Time machine",
                 artist: "mj apanay (ft. aren park)",
                 cover: "images/14.jpg",
-                audio: "music/west2.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/west2.mp3",
+                duration: "3:46",
+                credits: {
+                    composer: "Michelangelo Apanay",
+                    lyricist: "Michelangelo Apanay",
+                    album: "seen 11:23 pm",
+                    year: "2019"
+                },
                 lyrics:`
                 Staring at stars
                 Watching the moon
@@ -1366,7 +1512,14 @@ const playlist = {
                 title: "Harpy Hare",
                 artist: "Yaelokre",
                 cover: "images/15.jpg",
-                audio: "music/west3.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/west3.mp3",
+                duration: "2:59",
+                credits: {
+                    composer: "Yaelokre",
+                    lyricist: "Yaelokre",
+                    album: "Hayfields",
+                    year: "2024"
+                },
                 lyrics:`
                 Harpy Hare
                 Where have you buried all your children?
@@ -1427,7 +1580,14 @@ const playlist = {
                 title: "Good Time (1:08)",
                 artist: "Jagwar Twin",
                 cover: "images/16.jpg",
-                audio: "music/west4.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/west4.mp3",
+                duration: "2:38",
+                credits: {
+                    composer: "Roy English, Lucky West, Elijah Noll, Josh Dun",
+                    lyricist: "Roy English, Lucky West, Elijah Noll, Josh Dun",
+                    album: "Good Time (1:08) ",
+                    year: "2023"
+                },
                 lyrics:`
                 Nana na nana na
                 Are you ready?
@@ -1534,7 +1694,14 @@ const playlist = {
                 title: "What Does It Mean To You",
                 artist: "Carpetman",
                 cover: "images/17.jpg",
-                audio: "music/west5.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/west5.mp3",
+                duration: "4:00",
+                credits: {
+                    composer: "Carpetman",
+                    lyricist: "Carpetman",
+                    album: "單曲",
+                    year: "2024"
+                },
                 lyrics:`
                 What if I'm gonna say
                 That you were wrong
@@ -1592,7 +1759,14 @@ const playlist = {
                 title: "Off My Face",
                 artist: "Justin Bieber",
                 cover: "images/18.jpg",
-                audio: "music/west6.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/west6.mp3",
+                duration: "2:36",
+                credits: {
+                    composer: "Justin Bieber, Jake Torrey, Daniel James",
+                    lyricist: "Justin Bieber, Jake Torrey, Daniel James",
+                    album: "Justice",
+                    year: "2021"
+                },
                 lyrics:`
                 One touch and you got me stoned
                 Higher than I’ve ever known
@@ -1638,66 +1812,155 @@ const playlist = {
                 title: "シロクマ",
                 artist: "JABBERLOOP",
                 cover: "images/19.jpg",
-                audio: "music/other1.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/other1.mp3",
+                duration: "3:45",
+                credits: {
+                    composer: "永田雄樹",
+                    album: "JABBERLOOP",
+                    year: "2024"
+                },
                 lyrics:` `
             },
             2: {
                 title: "MAKE IT FUNKY NOW",
                 artist: "DOT96",
                 cover: "images/20.jpg",
-                audio: "music/other2.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/other2.mp3",
+                duration: "3:59",
+                credits: {
+                    composer: "DOT96",
+                    album: "DOT96 - NINETYSIX",
+                    year: "2019"
+                },
                 lyrics:` `
             },
             3: {
                 title: "Haunted Dance",
                 artist: "Mr.Asyu",
                 cover: "images/21.jpg",
-                audio: "music/other3.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/other3.mp3",
+                duration: "3:31",
+                credits: {
+                    composer: "Mr.Asyu",
+                    album: "音遊:Tone Sphere",
+                    year: "2020"
+                },
                 lyrics:` `
             },
             4: {
                 title: "The Crave",
                 artist: "Jelly Roll Morton",
                 cover: "images/22.jpg",
-                audio: "music/other4.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/other4.mp3",
+                duration: "4:38",
+                credits: {
+                    composer: "Jelly Roll Morton",
+                    album: "none",
+                    year: "unknow"
+                },
                 lyrics:` `
             },
             5: {
                 title: "Childishly fresh eyes",
-                artist: "A4",
+                artist: "Leyland James Kirby",
                 cover: "images/23.jpg",
-                audio: "music/other5.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/other5.mp3",
+                duration: "2:59",
+                credits: {
+                    composer: "Leyland James Kirby",
+                    album: "Everywhere at the End of Time",
+                    year: "2016"
+                },
                 lyrics:` `
             },
             6: {
                 title: "The Devil's Swing",
                 artist: "SirensCeol",
                 cover: "images/24.jpg",
-                audio: "music/other6.mp3",
+                audio: "https://github.com/yuki-yunier/Music/raw/refs/heads/main/other6.mp3",
+                duration: "5:03",
+                credits: {
+                    composer: "Stephen Burke",
+                    album: "The Method to the Madness",
+                    year: "2014"
+                },
                 lyrics:` `
             }
         }
     }
 };
 
+// 播放模式
+let repeatMode = 'off'; // 'off', 'one', 'all'
+let shuffleMode = false;
+
 // 取得 URL 參數
 const urlParams = new URLSearchParams(window.location.search);
 const listName = urlParams.get("playlist") || "kpop";
 const songId = urlParams.get('songs') || '1';
-const backBtn = document.getElementById("backBtn");
 
-if (backBtn) {
-  backBtn.onclick = () => {
-    if (listName) {
-      window.location.href = `${listName}.html`;
-    } else {
-      history.back();
-    }
-  };
+// ========== 漢堡選單功能 ==========
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const sidebarMenu = document.getElementById('sidebarMenu');
+const overlay = document.getElementById('overlay');
+
+function toggleMenu() {
+    hamburgerBtn.classList.toggle('active');
+    sidebarMenu.classList.toggle('active');
+    overlay.classList.toggle('active');
 }
 
-if(!playlist[listName]){
-    console.error(`歌單"${listName}" 不存在`);
+hamburgerBtn.addEventListener('click', toggleMenu);
+overlay.addEventListener('click', toggleMenu);
+
+// ========== 生成播放列表 ==========
+function generatePlaylist() {
+    const playlistItems = document.getElementById('playlistItems');
+    const songs = playlist[listName].songs;
+    
+    playlistItems.innerHTML = '';
+    
+    Object.keys(songs).forEach(id => {
+        const song = songs[id];
+        const isActive = id === songId;
+        
+        const item = document.createElement('div');
+        item.className = `playlist-item ${isActive ? 'active' : ''}`;
+        item.innerHTML = `
+            <img src="${song.cover}" alt="${song.title}">
+            <div class="playlist-item-info">
+                <div class="playlist-item-title">${song.title}</div>
+                <div class="playlist-item-artist">${song.artist}</div>
+            </div>
+            <div class="playlist-item-duration">${song.duration || '0:00'}</div>
+        `;
+        
+        item.addEventListener('click', () => {
+            window.location.href = `music-player.html?playlist=${listName}&songs=${id}`;
+        });
+        
+        playlistItems.appendChild(item);
+    });
+}
+
+generatePlaylist();
+
+// 返回按鈕
+const backBtn = document.getElementById("backBtn");
+if (backBtn) {
+    backBtn.onclick = () => {
+        if (listName) {
+            window.location.href = `${listName}.html`;
+        } else {
+            history.back();
+        }
+    };
+}
+
+if (!playlist[listName]) {
+    alert("歌單不存在");
+    location.href = "index.html"; // 或你想回的頁面
+    throw new Error("Playlist not found");
 }
 
 const currentSong = playlist[listName].songs[songId];
@@ -1708,27 +1971,57 @@ document.getElementById('artistName').textContent = currentSong.artist;
 document.getElementById('cover').src = currentSong.cover;
 document.getElementById('player').src = currentSong.audio;
 document.getElementById('lyricsContent').innerHTML = `<p>${currentSong.lyrics.replace(/\n/g, "<br>")}</p>`;
+document.getElementById('playlistName').textContent = playlist[listName].name;
+
+// 載入歌曲資訊
+if (currentSong.credits) {
+    document.getElementById('creditComposer').textContent = currentSong.credits.composer || '-';
+    document.getElementById('creditLyricist').textContent = currentSong.credits.lyricist || '-';
+    document.getElementById('creditAlbum').textContent = currentSong.credits.album || '-';
+    document.getElementById('creditYear').textContent = currentSong.credits.year || '-';
+}
+
+if (currentSong.youtubeUrl) {
+    document.getElementById('youtubeLink').href = currentSong.youtubeUrl;
+} else {
+    document.getElementById('youtubeLink').style.display = 'none';
+}
 
 // 音樂播放器功能
 const audio = document.getElementById("player");
+audio.addEventListener('canplaythrough', () => {
+    audio.play().then(() => {
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        albumCover.classList.add('rotating');
+        albumCover.classList.remove('paused');
+        albumBox.classList.add('playing');
+    }).catch(() => {
+        console.log("自動播放被瀏覽器阻擋");
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
+}, { once: true });
 const playBtn = document.getElementById("playBtn");
 const progress = document.getElementById("progress");
+const albumCover = document.getElementById("cover");
+const albumBox = document.getElementById("albumBox");
 
-audio.play().then(() => {
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-}).catch(() => {
-    playBtn.innerHTML = '<i class="fas fa-play"></i>'; // 被瀏覽器阻擋
-});
-
-playBtn.addEventListener("click", () => {
+// 播放/暫停切換 + 旋轉動畫
+function togglePlay() {
     if (audio.paused) {
         audio.play();
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        albumCover.classList.add('rotating');
+        albumCover.classList.remove('paused');
+        albumBox.classList.add('playing');
     } else {
         audio.pause();
         playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        albumCover.classList.add('paused');
+        albumBox.classList.remove('playing');
     }
-});
+}
+
+playBtn.addEventListener("click", togglePlay);
 
 const currentTimeEl = document.getElementById("currentTime");
 const durationTimeEl = document.getElementById("durationTime");
@@ -1770,50 +2063,96 @@ progress.addEventListener("change", (e) => {
     setTimeout(() => isDragging = false, 150);
 });
 
+// 歌曲結束處理（根據播放模式）
 audio.addEventListener("ended", () => {
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-    progress.value = 0;
-    currentTimeEl.textContent = "0:00";
+    if (repeatMode === 'one') {
+        // 單曲循環
+        audio.currentTime = 0;
+        audio.play();
+    } else if (shuffleMode) {
+        // 隨機播放
+        playRandomSong();
+    } else {
+        // 自動下一首
+        const nextId = parseInt(songId) + 1;
+        const maxSongs = Object.keys(playlist[listName].songs).length;
+        if (nextId <= maxSongs) {
+            window.location.href = `music-player.html?playlist=${listName}&songs=${nextId}`;
+        } else {
+            // 播放完畢
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            albumCover.classList.remove('rotating');
+            albumCover.classList.add('paused');
+            albumBox.classList.remove('playing');
+            progress.value = 0;
+            currentTimeEl.textContent = "0:00";
+        }
+    }
 });
+
+// ========== 播放模式控制 ==========
+const repeatBtn = document.getElementById('repeatBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+
+// 單曲循環
+repeatBtn.addEventListener('click', () => {
+    if (repeatMode === 'off') {
+        repeatMode = 'one';
+        repeatBtn.classList.add('active');
+        repeatBtn.title = '關閉循環';
+    } else {
+        repeatMode = 'off';
+        repeatBtn.classList.remove('active');
+        repeatBtn.title = '單曲循環';
+    }
+});
+
+// 隨機播放
+shuffleBtn.addEventListener('click', () => {
+    shuffleMode = !shuffleMode;
+    if (shuffleMode) {
+        shuffleBtn.classList.add('active');
+        shuffleBtn.title = '關閉隨機';
+    } else {
+        shuffleBtn.classList.remove('active');
+        shuffleBtn.title = '隨機播放';
+    }
+});
+
+// 隨機播放函數
+function playRandomSong() {
+    const songs = Object.keys(playlist[listName].songs);
+    let randomId;
+    do {
+        randomId = songs[Math.floor(Math.random() * songs.length)];
+    } while (randomId === songId && songs.length > 1);
+    
+    window.location.href = `music-player.html?playlist=${listName}&songs=${randomId}`;
+}
 
 // 上一首/下一首功能
 document.getElementById('prevBtn').addEventListener('click', () => {
-    const prevId = parseInt(songId) - 1;
-    if (prevId >= 1) {
-        window.location.href = `music-player.html?playlist=${listName}&songs=${prevId}`;
+    if (shuffleMode) {
+        playRandomSong();
+    } else {
+        const prevId = parseInt(songId) - 1;
+        if (prevId >= 1) {
+            window.location.href = `music-player.html?playlist=${listName}&songs=${prevId}`;
+        }
     }
 });
 
 document.getElementById('nextBtn').addEventListener('click', () => {
-    const nextId = parseInt(songId) + 1;
-    const maxSongs = playlist[listName].songs.length;
-    if (nextId <= 6) {
-        window.location.href = `music-player.html?playlist=${listName}&songs=${nextId}`;
+    if (shuffleMode) {
+        playRandomSong();
+    } else {
+        const nextId = parseInt(songId) + 1;
+        const maxSongs = Object.keys(playlist[listName].songs).length;
+        if (nextId <= maxSongs) {
+            window.location.href = `music-player.html?playlist=${listName}&songs=${nextId}`;
+        }
     }
 });
 </script>
 </body>
 </html>
-```
-
-## 步驟 3: 整理檔案結構
-```
-其中/
-├── kpop.html
-├── style.css
-├── images/
-│   ├── 1.webp
-│   ├── 2.jpg
-│   ├── 3.jpg
-│   ├── 4.jpg
-│   ├── 5.webp
-│   └── 6.jpg
-├── music/
-│   ├── song1.mp3
-│   ├── song2.mp3
-│   ├── song3.mp3
-│   ├── song4.mp3
-│   ├── song5.mp3
-│   └── song6.mp3
-└── HTML/
-    └── music-player.html  ← 只需要這一個播放器檔案
