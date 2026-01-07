@@ -331,17 +331,16 @@
     }
 
     /* 響應式設計 */
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .songs-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 20px;
-        overflow-x: visible;
+        grid-template-columns: repeat(3, 1fr); /* 3 個一排 */
+        gap: 25px;
       }
 
       .song-card {
-        min-width: 0;
         max-width: none;
+        min-width: 0;
       }
 
       .nav-arrow {
