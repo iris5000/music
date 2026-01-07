@@ -10,10 +10,9 @@ body {
 
 .bg-container {
   position: relative;
-  min-height: 100vh;
-  padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
+  min-height: auto;
+  padding: 40px 16px;
+  display: block;
 }
 
 .bg-container::before {
@@ -51,7 +50,8 @@ body {
   z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   padding: 0 10px;
   display: flex;
   flex-direction: column;
@@ -247,7 +247,7 @@ body {
 
   .style-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6px !important; 
+    gap: 10px !important; 
     padding: 0 !important;
     margin-bottom: 40px;
   }
@@ -257,9 +257,8 @@ body {
   }
 
   .style-card {
-    padding: 70px 16px; 
-    min-height: 260px; 
-    border-radius: 10px; 
+    min-height: 260px;
+    padding: 70px 16px;
   }
 
   .style-name {
